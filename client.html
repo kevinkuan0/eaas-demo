@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>HtoY_M0,Dir,Elev</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+
+  var startFlag = false;
+  var endFlag = false;
+  var startMarker;
+  var endMarker;
+  var startpt;
+  var endpt;
+
+
+
+  function initMap() {
+      var directionsService = new google.maps.DirectionsService;
+      var directionsDisplay = new google.maps.DirectionsRenderer;
+    function CenterControl(controlDiv, map, innerHTML, title) {
+
+      // Set CSS for the control border.
+      var controlUI = document.createElement('div');
+      controlUI.style.backgroundColor = '#fff';
+      controlUI.style.border = '2px solid #fff';
+      controlUI.style.borderRadius = '3px';
+      controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+      controlUI.style.cursor = 'pointer';
+      controlUI.style.marginBottom = '22px';
+      controlUI.style.textAlign = 'center';
+      controlUI.title = title;
+      controlDiv.appendChild(controlUI);
+
+      // Set CSS for the control interior.
+      var controlText = document.createElement('div');
+      controlText.style.color = 'rgb(25,25,25)';
+      controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+      controlText.style.fontSize = '16px';
+      controlText.style.lineHeight = '38px';
+      controlText.style.paddingLeft = '5px';
+      controlText.style.paddingRight = '5px';
+      controlText.innerHTML = innerHTML;
+      controlUI.appendChild(controlText);
+
+      // Setup the click event listeners: 
+      controlUI.addEventListener('click', function() {
+          //TODO replace this with Ajax request to server
+          //window.alert('Directions request' + startMarker.position);
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+          
+      });
+
+  }
+  function ClearControl(controlDiv, map, innerHTML, title) {
+
+      // Set CSS for the control border.
+      var controlUI = document.createElement('div');
+      controlUI.style.backgroundColor = '#fff';
+      controlUI.style.border = '2px solid #fff';
+      controlUI.style.borderRadius = '3px';
+      controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+      controlUI.style.cursor = 'pointer';
+      controlUI.style.marginBottom = '22px';
+      controlUI.style.textAlign = 'center';
+      controlUI.title = title;
+      controlDiv.appendChild(controlUI);
+
+      // Set CSS for the control interior.
+      var controlText = document.createElement('div');
+      controlText.style.color = 'rgb(25,25,25)';
+      controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+      controlText.style.fontSize = '16px';
+      controlText.style.lineHeight = '38px';
+      controlText.style.paddingLeft = '5px';
+      controlText.style.paddingRight = '5px';
+      controlText.innerHTML = innerHTML;
+      controlUI.appendChild(controlText);
+
+      // Setup the click event listeners: 
+      controlUI.addEventListener('click', function() {
+          //TODO replace this with Ajax request to server
+          //window.alert('Directions request' + startMarker.position);
+          window.location.reload();
+      });
+
+  }
+
+  function StartControl(controlDiv, map, innerHTML, title) {
+
+      // Set CSS for the control border.
+      var controlUI = document.createElement('div');
+      controlUI.style.backgroundColor = '#f00';
+      controlUI.style.border = '2px solid #fff';
+      controlUI.style.borderRadius = '3px';
+      controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+      controlUI.style.cursor = 'pointer';
+      controlUI.style.marginBottom = '22px';
+      controlUI.style.textAlign = 'center';
+      controlUI.title = title;
+      controlDiv.appendChild(controlUI);
+
+      // Set CSS for the control interior.
+      var controlText = document.createElement('div');
+      controlText.style.color = 'rgb(25,25,25)';
+      controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+      controlText.style.fontSize = '16px';
+      controlText.style.lineHeight = '38px';
+      controlText.style.paddingLeft = '5px';
+      controlText.style.paddingRight = '5px';
+      controlText.innerHTML = innerHTML;
+      controlUI.appendChild(controlText);
+
+      // Setup the click event listeners: 
+      controlUI.addEventListener('click', function() {
+          startFlag = true;
+          controlUI.style.backgroundColor = '#0f0'; 
+      });
+
+  }
+
+  function EndControl(controlDiv, map, innerHTML, title) {
+
+      // Set CSS for the control border.
+      var controlUI = document.createElement('div');
+      controlUI.style.backgroundColor = '#00f';
+      controlUI.style.border = '2px solid #fff';
+      controlUI.style.borderRadius = '3px';
+      controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+      controlUI.style.cursor = 'pointer';
+      controlUI.style.marginBottom = '22px';
+      controlUI.style.textAlign = 'center';
+      controlUI.title = title;
+      controlDiv.appendChild(controlUI);
+
+      // Set CSS for the control interior.
+      var controlText = document.createElement('div');
+      controlText.style.color = 'rgb(25,25,25)';
+      controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+      controlText.style.fontSize = '16px';
+      controlText.style.lineHeight = '38px';
+      controlText.style.paddingLeft = '5px';
+      controlText.style.paddingRight = '5px';
+      controlText.innerHTML = innerHTML;
+      controlUI.appendChild(controlText);
+
+      // Setup the click event listeners: 
+      controlUI.addEventListener('click', function() {
+          endFlag = true;
+          controlUI.style.backgroundColor = '#0f0'; 
+      });
+
+  }
+      var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          draggableCursor: 'crosshair',
+          center: {
+              lat: 24.720500,
+              lng: 121.377995
+          }
+      });
+      directionsDisplay.setMap(map);
+
+      var onChangeHandler = function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+      };
+      //document.getElementById('start').addEventListener('change', onChangeHandler);
+      //document.getElementById('end').addEventListener('change', onChangeHandler);
+
+      var calculateControlDiv = document.createElement('div');
+      var centerControl = new CenterControl(calculateControlDiv, map, 'Calculate', 'Click to compute energy consumption');
+      calculateControlDiv.index = 1;
+      var clearControlDiv = document.createElement('div');
+      var clearControl = new ClearControl(clearControlDiv, map, 'Clear', 'Click to clear marker');
+      clearControlDiv.index = 1;
+      var startControlDiv = document.createElement('div');
+      var startControl = new StartControl(startControlDiv, map, 'start', 'Click to add start marker');
+      startControlDiv.index = 1;
+      var endControlDiv = document.createElement('div');
+      var endControl = new EndControl(startControlDiv, map, 'end', 'Click to add end marker');
+      endControlDiv.index = 1;
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(startControlDiv);
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(endControlDiv);
+      map.controls[google.maps.ControlPosition.TOP_CENTER].push(calculateControlDiv);
+      map.controls[google.maps.ControlPosition.TOP_CENTER].push(clearControlDiv);
+      
+      google.maps.event.addListener(map, 'click', function(e) {
+          if(startFlag == true){
+              startMarker = new google.maps.Marker({
+                position: {lat: e.latLng.lat(), lng: e.latLng.lng()},
+                map: map,
+                title: 'start point: {lat: ' + e.latLng.lat() + ', lng: ' + e.latLng.lng() + '}',
+              });
+              startpt = {lat: e.latLng.lat(), lng: e.latLng.lng()};
+              startFlag = false;
+              //startControl.style.backgroundColor = '#f00';
+          }
+          if(endFlag == true){
+              sendMarker = new google.maps.Marker({
+                position: {lat: e.latLng.lat(), lng: e.latLng.lng()},
+                map: map,
+                title: 'end point: {lat: ' + e.latLng.lat() + ', lng: ' + e.latLng.lng() + '}',
+              });
+              endpt =  {lat: e.latLng.lat(), lng: e.latLng.lng()};
+              endFlag = false;
+              //startControl.style.backgroundColor = '#f00';
+          }
+        
+      });
+  }
+
+  function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+      directionsService.route({
+          origin: startpt,
+          destination: endpt,
+          travelMode: google.maps.TravelMode.DRIVING
+      }, function(response, status) {
+          if (status === google.maps.DirectionsStatus.OK) {
+              directionsDisplay.setDirections(response);
+          } else {
+              window.alert('Directions request failed due to ' + status);
+          }
+      });
+  }
+
+    </script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0OyDvWPq3QO5cnUl458DOvbs6BvbSui8&callback=initMap"
+        async defer></script>
+  </body>
+</html>
