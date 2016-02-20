@@ -14,6 +14,7 @@
         height: 100%;
       }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   </head>
   <body>
     <div id="map"></div>
@@ -223,6 +224,11 @@
   }
 
   function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+      var post_data = {
+          src: startpt,
+          dst: endpt
+      };
+      //alert(JSON.stringify(post_data));
       directionsService.route({
           origin: startpt,
           destination: endpt,
@@ -232,6 +238,19 @@
               directionsDisplay.setDirections(response);
           } else {
               window.alert('Directions request failed due to ' + status);
+          }
+      });
+      $.ajax({
+          type: 'POST',
+          url: "http://192.168.10.60:23456/energy",
+          data: JSON.stringify(post_data),
+          contentType: "application/json; charset=utf-8",
+          success: function(data){
+              //TODO display response 
+            alert("Data: " + data + "\nStatus: " + status);
+          },
+          error: function(jqXHR, exception){
+              alert("[-] ajax failed! status: " + jqXHR.status + " exception: " + exception);
           }
       });
   }
