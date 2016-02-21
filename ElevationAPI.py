@@ -12,7 +12,7 @@ from geopy.distance import distance
 class ElevationAPI:
     
     def __init__(self,
-                 jpath = 'C:/Users/Kevin/Desktop/EaaS/GoogleMap/HtoY_M/HtoY_M_Elev.json',
+                 jpath = 'HtoY_M_Elev.json',
                  ):
         self.j = None
         self.jpath = jpath

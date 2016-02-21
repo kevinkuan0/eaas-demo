@@ -1,1 +1,1 @@
-EV_consumption.exe emer t > emer.out
+EV_consumption2.exe file t > file.out

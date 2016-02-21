@@ -5,7 +5,7 @@ from decode import decode
 class DirAPI:
 
     def __init__(self,
-                 jpath = 'C:/Users/Kevin/Desktop/EaaS/GoogleMap/HtoY_M/HtoY_M_Dir.json'):
+                 jpath = 'HtoY_M_Dir.json'):
         self.j = None
         self.jpath = jpath   
         self.rlen = 0
