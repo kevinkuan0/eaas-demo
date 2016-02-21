@@ -75,6 +75,7 @@ def getAll(lat1, lng1, lat2, lng2, avdHigh):
     getDSVFile(lat1, lng1, lat2, lng2, avdHigh)
     call('EV.cmd', shell=True)
     (energy_j, distance, energy_kwh, efficiency) = getJDWE()
+    return energy_kwh
     print 'energy_j %f distance %f energy_kwh %f efficiency %f' % (energy_j, distance, energy_kwh, efficiency)
     
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask.ext.cors import CORS
 import json
+import untitled0
 
 app = Flask(__name__)
 CORS(app)
@@ -16,8 +17,9 @@ def hello():
 
     src = data['src']
     dst = data['dst']
-
-    return "Hello World!\n"
+    energy_j = untitled0.getAll(src['lat'], src['lng'], dst['lat'], dst['lng'], False)
+    
+    return energy_j
 @app.route("/", methods=['GET'])
 def test():
     return "Hello world!\n"
