@@ -18,8 +18,11 @@ def hello():
     src = data['src']
     dst = data['dst']
     energy_j = untitled0.getAll(src['lat'], src['lng'], dst['lat'], dst['lng'], False)
+    print '%f' % energy_j
     
-    return energy_j
+    return '%f' % energy_j
+    #return "Hello world!\n"
+    
 @app.route("/", methods=['GET'])
 def test():
     return "Hello world!\n"

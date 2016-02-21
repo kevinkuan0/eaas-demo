@@ -67,16 +67,19 @@ def getDSVFile(lat1, lng1, lat2, lng2, avdHigh):
     #f2.close()
     
 def getJDWE():
-    with open('file.out') as f:
+    with open('C:/Users/CGGM-kevinkuan0/Desktop/eaas-demo/file.out') as f:
         line = f.readline()
         return map(float, line.split(' '))
     
 def getAll(lat1, lng1, lat2, lng2, avdHigh):
+    print 'test'
     getDSVFile(lat1, lng1, lat2, lng2, avdHigh)
     call('EV.cmd', shell=True)
+    print 'call fin'
     (energy_j, distance, energy_kwh, efficiency) = getJDWE()
-    return energy_kwh
     print 'energy_j %f distance %f energy_kwh %f efficiency %f' % (energy_j, distance, energy_kwh, efficiency)
+    return energy_kwh
+    
     
 if __name__ == "__main__":
     getAll(24.841443,121.015447,24.705530,121.739171,False)
